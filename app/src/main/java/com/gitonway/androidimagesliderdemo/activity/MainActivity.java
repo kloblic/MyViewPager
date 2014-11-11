@@ -24,92 +24,88 @@ import com.gitonway.androidimagesliderdemo.widget.imageslider.SliderTypes.BaseSl
 import com.gitonway.androidimagesliderdemo.widget.imageslider.SliderTypes.TextSliderView;
 
 
-public class MainActivity extends Activity implements BaseSliderView.OnSliderClickListener{
+public class MainActivity extends Activity implements BaseSliderView.OnSliderClickListener {
 
-	
+
     private SliderLayout mDemoSlider;
-    
+    HashMap<String, Integer> file_maps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        
-        mDemoSlider = (SliderLayout)findViewById(R.id.slider);
 
-        //Á½ÖÖ·½Ê½¼ÓÔØÊı¾İ
-        
-        //¼ÓÔØ±¾µØ
-        HashMap<String,String> url_maps = new HashMap<String, String>();
-        url_maps.put("GitOnWay", "http://gitonway.blog.163.com/");
-        
-        //¼ÓÔØÍøÂç
-        HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
-        file_maps.put("ÊÀ½ç±­-A",R.drawable.a);
-        file_maps.put("ÊÀ½ç±­-B",R.drawable.b);
-        file_maps.put("ÊÀ½ç±­-C",R.drawable.c);
-        file_maps.put("ÊÀ½ç±­-D", R.drawable.d);
-        
-        
 
-        for(String name : file_maps.keySet()){
-            TextSliderView textSliderView = new TextSliderView(this);
-            // ³õÊ¼»¯»ÃµÆÆ¬Ò³Ãæ
-            textSliderView
-                    .description(name)
-                    .image(file_maps.get(name))
-                    .setOnSliderClickListener(this);
-
-            //Ìí¼ÓÒª´«µİµÄÊı¾İ
-            textSliderView.getBundle()
-                    .putString("extra",name);
-
-           mDemoSlider.addSlider(textSliderView);
-        }
-        
-        
-//      »ÃµÆÆ¬ÇĞ»»·½Ê½  
-        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
-//      Ö¸Ê¾·ûÎ»ÖÃ  
-        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-//      ¶¨ÒåÖ¸Ê¾Æ÷ÑùÊ½  
-//      mDemoSlider.setCustomIndicator(your view);
-//      »ÃµÆÆ¬Ñ­»·  
-//      mDemoSlider.startAutoCycle();
-//      Í£Ö¹Ñ­»·
-        mDemoSlider.stopAutoCycle();
-//      ÉèÖÃÖ¸Ê¾Æ÷µÄÏÔÊ¾Óë·ñ  
-        mDemoSlider.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Visible);
-//      ÉèÖÃ»ÃµÆÆ¬µÄ×ª»¯Ê±¼ä  
-//      mDemoSlider.setSliderTransformDuration(5000, null);
-//      ÓÃÀ´×Ô¶¨Òå»ÃµÆÆ¬±êÌâµÄÏÔÊ¾·½Ê½  
-        mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-//      »ÃµÆÆ¬ÇĞ»»Ê±¼ä  
-        mDemoSlider.setDuration(3000);
-        
-        
-        
-        
-        
-        ListView mListView = (ListView)findViewById(R.id.transformers);
+        initSlider();
+        ListView mListView = (ListView) findViewById(R.id.transformers);
         mListView.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.type)));
-        
-        
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mDemoSlider.setPresetTransformer(((TextView) view).getText().toString());
             }
         });
+    }
 
+    public void initSlider() {
+
+        mDemoSlider = (SliderLayout) findViewById(R.id.slider);
+
+        //ä¸¤ç§æ–¹å¼åŠ è½½æ•°æ®
+
+        //åŠ è½½æœ¬åœ°
+        HashMap<String, String> url_maps = new HashMap<String, String>();
+        url_maps.put("GitOnWay", "http://gitonway.blog.163.com/");
+
+        //åŠ è½½ç½‘ç»œ
+        HashMap<String, Integer> file_maps = new HashMap<String, Integer>();
+        file_maps.put("ä¸–ç•Œæ¯-A", R.drawable.a);
+        file_maps.put("ä¸–ç•Œæ¯-B", R.drawable.b);
+        file_maps.put("ä¸–ç•Œæ¯-C", R.drawable.c);
+        file_maps.put("ä¸–ç•Œæ¯-D", R.drawable.d);
+
+
+        for (String name : file_maps.keySet()) {
+            TextSliderView textSliderView = new TextSliderView(this);
+            // åˆå§‹åŒ–å¹»ç¯ç‰‡é¡µé¢
+            textSliderView
+                    .description(name)
+                    .image(file_maps.get(name))
+                    .setOnSliderClickListener(this);
+
+            //æ·»åŠ è¦ä¼ é€’çš„æ•°æ®
+            textSliderView.getBundle()
+                    .putString("extra", name);
+
+            mDemoSlider.addSlider(textSliderView);
+        }
+
+
+        //      å¹»ç¯ç‰‡åˆ‡æ¢æ–¹å¼
+        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+//      æŒ‡ç¤ºç¬¦ä½ç½®
+        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+//      å®šä¹‰æŒ‡ç¤ºå™¨æ ·å¼
+//      mDemoSlider.setCustomIndicator(your view);
+//      å¹»ç¯ç‰‡å¾ªç¯
+//      mDemoSlider.startAutoCycle();
+//      åœæ­¢å¾ªç¯
+        mDemoSlider.stopAutoCycle();
+//      è®¾ç½®æŒ‡ç¤ºå™¨çš„æ˜¾ç¤ºä¸å¦
+        mDemoSlider.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Visible);
+//      è®¾ç½®å¹»ç¯ç‰‡çš„è½¬åŒ–æ—¶é—´
+//      mDemoSlider.setSliderTransformDuration(5000, null);
+//      ç”¨æ¥è‡ªå®šä¹‰å¹»ç¯ç‰‡æ ‡é¢˜çš„æ˜¾ç¤ºæ–¹å¼
+        mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+//      å¹»ç¯ç‰‡åˆ‡æ¢æ—¶é—´
+        mDemoSlider.setDuration(3000);
 
     }
-    
+
     @Override
     public void onSliderClick(BaseSliderView slider) {
-        Toast.makeText(this,slider.getBundle().get("extra") + "",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, slider.getBundle().get("extra") + "", Toast.LENGTH_SHORT).show();
     }
 
 
