@@ -1,11 +1,14 @@
 package com.gitonway.androidimagesliderdemo.activity;
 
+import java.io.File;
 import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,7 +29,7 @@ import com.gitonway.androidimagesliderdemo.widget.imageslider.SliderTypes.TextSl
 
 public class MainActivity extends Activity implements BaseSliderView.OnSliderClickListener {
 
-
+    private final static String TAG = "slider";
     private SliderLayout mDemoSlider;
     HashMap<String, Integer> file_maps;
 
@@ -34,8 +37,6 @@ public class MainActivity extends Activity implements BaseSliderView.OnSliderCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         initSlider();
         ListView mListView = (ListView) findViewById(R.id.transformers);
         mListView.setAdapter(new ArrayAdapter<String>(this,
@@ -49,35 +50,28 @@ public class MainActivity extends Activity implements BaseSliderView.OnSliderCli
     }
 
     public void initSlider() {
-
         mDemoSlider = (SliderLayout) findViewById(R.id.slider);
-
         //两种方式加载数据
+        //加载网络
+        HashMap<String, String> url_maps = new HashMap<String, String>();
+        url_maps.put("GitOnWay", "http://img0.bdstatic.com/img/image/sheji1111.jpg");
+        url_maps.put("GitOnWay2", "http://img0.bdstatic.com/img/image/sheji1111.jpg");
 
         //加载本地
-        HashMap<String, String> url_maps = new HashMap<String, String>();
-        url_maps.put("GitOnWay", "http://gitonway.blog.163.com/");
-
-        //加载网络
         HashMap<String, Integer> file_maps = new HashMap<String, Integer>();
         file_maps.put("世界杯-A", R.drawable.a);
         file_maps.put("世界杯-B", R.drawable.b);
         file_maps.put("世界杯-C", R.drawable.c);
         file_maps.put("世界杯-D", R.drawable.d);
 
-
-        for (String name : file_maps.keySet()) {
+        for (String name : url_maps.keySet()) {
             TextSliderView textSliderView = new TextSliderView(this);
             // 初始化幻灯片页面
-            textSliderView
-                    .description(name)
-                    .image(file_maps.get(name))
-                    .setOnSliderClickListener(this);
-
+            textSliderView.description(name);
+            textSliderView.image(url_maps.get(name));
+            textSliderView.setOnSliderClickListener(this);
             //添加要传递的数据
-            textSliderView.getBundle()
-                    .putString("extra", name);
-
+            textSliderView.getBundle().putString("extra", name);
             mDemoSlider.addSlider(textSliderView);
         }
 
@@ -100,6 +94,8 @@ public class MainActivity extends Activity implements BaseSliderView.OnSliderCli
         mDemoSlider.setCustomAnimation(new DescriptionAnimation());
 //      幻灯片切换时间
         mDemoSlider.setDuration(3000);
+
+
 
     }
 
